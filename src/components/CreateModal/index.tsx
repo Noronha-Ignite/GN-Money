@@ -28,17 +28,27 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => 
     TransactionType.Income
   );
 
-  function handleCreate(event: FormEvent) {
+  async function handleCreate(event: FormEvent) {
     event.preventDefault();
 
     if (!value || !title || !category) return;
 
-    createTransaction({
+    await createTransaction({
       title,
       category,
       amount: value,
       type: transactionType,
-    }).then(onRequestClose);
+    });
+
+    clearFields();
+    onRequestClose();
+  }
+
+  function clearFields() {
+    setTitle('');
+    setCategory('');
+    setValue(null);
+    setTransactionType(TransactionType.Income);
   }
 
   return (
