@@ -1,4 +1,4 @@
-export interface TransactionResponse {
+export interface Transaction {
   id: number,
   title: string,
   amount: number,
@@ -7,6 +7,6 @@ export interface TransactionResponse {
   createdAt: string,
 }
 
-export type Transaction =  Omit<TransactionResponse, 'id' | 'createdAt'>;
+export type TransactionInput =  Omit<Transaction, 'id' | 'createdAt'>;
 
-export type Transactions = TransactionResponse[]
+export type Transactions = Transaction[]
