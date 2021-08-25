@@ -3,6 +3,7 @@ import CreateModal from './components/CreateModal';
 
 import { Dashboard } from './components/Dashboard';
 import { Header } from './components/Header';
+import { TransactioProvider } from './contexts/TransactionsContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 
 export function App() {
@@ -19,9 +20,11 @@ export function App() {
   return (
     <>
       <GlobalStyles />
-      <Header onOpenCreateModal={ handleOpenCreateModal } />
-      <Dashboard />
-      <CreateModal isOpen={ isCreateModalOpen } onRequestClose={ handleCloseCreateModal } />
+      <TransactioProvider>
+        <Header onOpenCreateModal={ handleOpenCreateModal } />
+        <Dashboard />
+        <CreateModal isOpen={ isCreateModalOpen } onRequestClose={ handleCloseCreateModal } />
+      </TransactioProvider>
     </>
   );
 }

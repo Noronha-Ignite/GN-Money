@@ -1,13 +1,12 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import Modal from 'react-modal';
+
+import { TransactionsContext } from '../../contexts/TransactionsContext';
+import { TransactionType } from '../../models/TransactionType';
 
 import CloseSVG from '../../assets/close.svg';
 import IncomeSVG from '../../assets/income.svg';
 import OutcomeSVG from '../../assets/outcome.svg';
-import { Transaction } from '../../models/Transaction';
-import { TransactionType } from '../../models/TransactionType';
-
-import { api } from '../../services/api';
 
 import { Container, RadioBox, TransactionTypeContainer } from './styles';
 
@@ -19,6 +18,8 @@ interface CreateModalProps {
 Modal.setAppElement('#root');
 
 const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => {
+  const { createTransaction } = useContext(TransactionsContext);
+
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [value, setValue] = useState<number | null>(null);
@@ -30,20 +31,14 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => 
   function handleCreate(event: FormEvent) {
     event.preventDefault();
 
-    if (!value) return;
+    if (!value || !title || !category) return;
 
-    const data: Transaction = {
+    createTransaction({
       title,
       category,
       amount: value,
       type: transactionType,
-    };
-
-    api.post('/transactions', data);
-  }
-
-  function handleSetType(type: TransactionType) {
-    setTransactionType(type);
+    }).then(onRequestClose);
   }
 
   return (
@@ -79,7 +74,7 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => 
             activeColor='green'
             isActive={transactionType === TransactionType.Income}
             type='button'
-            onClick={() => handleSetType(TransactionType.Income)}
+            onClick={() => setTransactionType(TransactionType.Income)}
           >
             <img src={IncomeSVG} alt='Entrada' />
             <span>Entrada</span>
@@ -88,7 +83,7 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => 
             activeColor='red'
             isActive={transactionType === TransactionType.Outcome}
             type='button'
-            onClick={() => handleSetType(TransactionType.Outcome)}
+            onClick={() => setTransactionType(TransactionType.Outcome)}
           >
             <img src={OutcomeSVG} alt='Entrada' />
             <span>Saída</span>
