@@ -12,8 +12,13 @@ export const Container = styled.div`
     border-radius: .25rem;
     color: var(--text-title);
 
-    &.highlighted-background {
+    &.hl-green {
       background: var(--green);
+      color: #FFF;
+    }
+
+    &.hl-red {
+      background: var(--red);
       color: #FFF;
     }
 
