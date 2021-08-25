@@ -1,8 +1,8 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import Modal from 'react-modal';
 
-import { TransactionsContext } from '../../contexts/TransactionsContext';
 import { TransactionType } from '../../models/TransactionType';
+import { useTransactions } from '../../hooks/useTransactions';
 
 import CloseSVG from '../../assets/close.svg';
 import IncomeSVG from '../../assets/income.svg';
@@ -18,7 +18,7 @@ interface CreateModalProps {
 Modal.setAppElement('#root');
 
 const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onRequestClose }) => {
-  const { createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useTransactions();
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');

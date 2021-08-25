@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
+
+import { useTransactions } from '../../hooks/useTransactions';
+import { TransactionType } from '../../models/TransactionType';
 
 import IncomeSVG from '../../assets/income.svg';
 import OutcomeSVG from '../../assets/outcome.svg';
 import TotalSVG from '../../assets/total.svg';
 
-import { TransactionsContext } from '../../contexts/TransactionsContext';
-import { TransactionType } from '../../models/TransactionType';
-
 import { Container } from './styles';
 
 export const Summary: React.FC = () => {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransactions();
 
   const summary = transactions.reduce((acc, transaction) => {
     if ( transaction.type === TransactionType.Income ) {
@@ -49,7 +49,7 @@ export const Summary: React.FC = () => {
         </header>
         <strong>-{currencyFormatter.format(summary.withdraws)}</strong>
       </div>
-      <div className='highlighted-background'>
+      <div className={ summary.total >= 0 ? 'hl-green' : 'hl-red' }>
         <header>
           <p>Total</p>
           <img src={TotalSVG} alt='Total' />
